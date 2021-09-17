@@ -1,6 +1,7 @@
 package com.sunnyweahter.android.ui.place
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.view.LayoutInflater
@@ -14,7 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sunnyweahter.android.MainActivity
 import com.sunnyweahter.android.R
+import com.sunnyweahter.android.ui.weather.WeatherActivity
 
 class PlaceFragment : Fragment() {
 
@@ -33,6 +36,17 @@ class PlaceFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        if (activity is MainActivity && viewModel.isPlaceSaved()) {
+            val place = viewModel.getSavedPlace()
+            val intent = Intent(context, WeatherActivity::class.java).apply {
+                putExtra("location_lng", place.location.lng)
+                putExtra("location_lat", place.location.lat)
+                putExtra("place_name", place.name)
+            }
+            startActivity(intent)
+            activity?.finish()
+            return
+        }
         val layoutManager = LinearLayoutManager(activity)
         val recyclerView: RecyclerView = activity!!.findViewById(R.id.recyclerView)
         val searchPlaceEdit: EditText = activity!!.findViewById(R.id.searchPlaceEdit)

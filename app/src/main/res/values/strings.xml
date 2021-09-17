@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SunnyWeather</string>
+    <string name="no_des">no des</string>
+    <string name="input_place">输入地址</string>
 </resources>
